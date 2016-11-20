@@ -3,12 +3,11 @@
  */
 package textgen;
 
-import static org.junit.Assert.*;
-
-import java.util.LinkedList;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author UC San Diego MOOC team
@@ -101,8 +100,8 @@ public class MyLinkedListTester {
 		}
 		
 	}
-	
-	
+
+
 	/** Test removing an element from the list.
 	 * We've included the example from the concept challenge.
 	 * You will want to add more tests.  */
