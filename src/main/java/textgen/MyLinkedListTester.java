@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -122,16 +123,25 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddEnd()
 	{
-        // TODO: implement this test
-		
-	}
+	    emptyList.add(0);
+        assertEquals("Add: check element was added to end ", 0, emptyList.get(emptyList.size() - 1).intValue());
+	    assertEquals("Add: check size is correct ", 1, emptyList.size());
+
+        emptyList.add(1);
+        assertEquals("Add: check element was added to end ", 1, emptyList.get(emptyList.size() - 1).intValue());
+        assertEquals("Add: check size is correct ", 2, emptyList.size());
+    }
 
 	
 	/** Test the size of the list */
 	@Test
 	public void testSize()
 	{
-		// TODO: implement this test
+        emptyList.add(1);
+        assertEquals(1, emptyList.size());
+
+        emptyList.add(2);
+        assertEquals(2, emptyList.size());
 	}
 
 	
@@ -144,7 +154,6 @@ public class MyLinkedListTester {
 	public void testAddAtIndex()
 	{
         // TODO: implement this test
-		
 	}
 	
 	/** Test setting an element in the list */
