@@ -32,19 +32,60 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	@Override
 	public void train(String sourceText)
 	{
-		// TODO: Implement this method
-	}
+	    if (sourceText == null || sourceText.isEmpty()) {
+	        return;
+        }
+
+	    String[] words = sourceText.split(" +");
+	    starter = words[0];
+	    String prevWord = starter;
+
+	    for (int i = 1; i < words.length; i++) {
+            ListNode existingWordNode = getExistingWordNode(prevWord);
+            if (existingWordNode != null) {
+                existingWordNode.addNextWord(words[i]);
+            } else {
+                ListNode newWordNode = new ListNode(prevWord);
+                newWordNode.addNextWord(words[i]);
+                wordList.add(newWordNode);
+            }
+
+            prevWord = words[i];
+
+            if (i == words.length - 1) {
+                ListNode lastNode = new ListNode(prevWord);
+                lastNode.addNextWord(starter);
+                wordList.add(lastNode);
+            }
+        }
+    }
 	
 	/** 
 	 * Generate the number of words requested.
 	 */
 	@Override
 	public String generateText(int numWords) {
-	    // TODO: Implement this method
-		return null;
+	    if (wordList.size() == 0 || numWords < 1) {
+	        return "";
+        }
+
+	    String currWord = starter;
+	    StringBuilder output = new StringBuilder();
+
+	    int wordsGenerated = 0;
+	    while (wordsGenerated < numWords) {
+	        ListNode wordNode = getExistingWordNode(currWord);
+            String randomWord = wordNode.getRandomNextWord(rnGenerator);
+	        output.append(randomWord);
+	        output.append(" ");
+	        currWord = randomWord;
+	        wordsGenerated++;
+        }
+
+		return output.toString();
 	}
-	
-	
+
+
 	// Can be helpful for debugging
 	@Override
 	public String toString()
@@ -56,17 +97,26 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 		}
 		return toReturn;
 	}
-	
+
 	/** Retrain the generator from scratch on the source text */
 	@Override
 	public void retrain(String sourceText)
 	{
-		// TODO: Implement this method.
+        wordList = new LinkedList<ListNode>();
+        starter = "";
+		train(sourceText);
 	}
-	
-	// TODO: Add any private helper methods you need here.
-	
-	
+
+	private ListNode getExistingWordNode(String word) {
+        for (ListNode node : wordList) {
+            if (node.getWord().equals(word)) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
 	/**
 	 * This is a minimal set of tests.  Note that it can be difficult
 	 * to test methods/classes with randomized behavior.   
@@ -141,10 +191,8 @@ class ListNode
 	
 	public String getRandomNextWord(Random generator)
 	{
-		// TODO: Implement this method
-	    // The random number generator should be passed from 
-	    // the MarkovTextGeneratorLoL class
-	    return null;
+	    int randomIndex = generator.nextInt(nextWords.size());
+	    return nextWords.get(randomIndex);
 	}
 
 	public String toString()
