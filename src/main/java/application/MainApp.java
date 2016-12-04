@@ -218,7 +218,7 @@ public class MainApp extends Application {
     	// set content and styling
     	alert.getDialogPane().setContent(box);
     	alert.getDialogPane().getStylesheets().add(
-    			   getClass().getResource("application.css").toExternalForm());
+    			   getClass().getResource("/application.css").toExternalForm());
     	alert.getDialogPane().getStyleClass().add("myDialog");
     	alert.showAndWait();
     }

@@ -4,9 +4,7 @@
 package spelling;
 
 //import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * WPTree implements WordPath by dynamically creating a tree of words during a Breadth First
@@ -26,10 +24,10 @@ public class WPTree implements WordPath {
 	// You'll need to create your own NearbyWords object here.
 	public WPTree () {
 		this.root = null;
-		// TODO initialize a NearbyWords object
-		// Dictionary d = new DictionaryHashSet();
-		// DictionaryLoader.loadDictionary(d, "data/dict.txt");
-		// this.nw = new NearbyWords(d);
+		// COMPLETED initialize a NearbyWords object
+		 Dictionary d = new DictionaryHashSet();
+		 DictionaryLoader.loadDictionary(d, "data/dict.txt");
+		 this.nw = new NearbyWords(d);
 	}
 	
 	//This constructor will be used by the grader code
@@ -41,8 +39,34 @@ public class WPTree implements WordPath {
 	// see method description in WordPath interface
 	public List<String> findPath(String word1, String word2) 
 	{
-	    // TODO: Implement this method.
-	    return new LinkedList<String>();
+        // TODO: Implement this method.
+	    root = new WPTreeNode(word1, null);
+
+        Queue<WPTreeNode> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        queue.add(root);
+
+	    while (!queue.isEmpty()) {
+	        WPTreeNode currentNode = queue.remove();
+	        String currentWord = currentNode.getWord();
+	        List<String> distanceOneWords = nw.distanceOne(currentWord, true);
+	        for (String word : distanceOneWords) {
+	            if (visited.contains(word)) {
+	                continue;
+                }
+
+	            visited.add(word);
+
+	            WPTreeNode childNode = currentNode.addChild(word);
+	            queue.add(childNode);
+
+	            if (word.equals(word2)) {
+	                return childNode.buildPathToRoot();
+                }
+            }
+        }
+
+	    return null;
 	}
 	
 	// Method to print a list of WPTreeNodes (useful for debugging)
